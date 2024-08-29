@@ -4,7 +4,7 @@ import argparse
 from torch.backends import cudnn
 from models.ConvIR import build_net
 from train import _train
-from eval import _eval
+#from eval import _eval
 
 def main(args):
     cudnn.benchmark = True
@@ -17,15 +17,15 @@ def main(args):
         os.makedirs(args.result_dir)
 
     model = build_net()
-    print(model)
+    #print(model)
 
     if torch.cuda.is_available():
         model.cuda()
-    if args.mode == 'train':
-        _train(model, args)
+    #if args.mode == 'train':
+    _train(model, args)
 
-    elif args.mode == 'test':
-        _eval(model, args)
+    #elif args.mode == 'test':
+     #   _eval(model, args)
 
 
 if __name__ == '__main__':
@@ -33,8 +33,8 @@ if __name__ == '__main__':
 
     # Directories
     parser.add_argument('--model_name', default='ConvIR', type=str)
-    parser.add_argument('--data_dir', type=str, default='../../dataset/deraining/train/Rain13K/')
-    parser.add_argument('--valid_data', type=str, default='/Rain100K/')
+    parser.add_argument('--data_dir', type=str, default='/home/prrgpp000/cpa_enhanced/datasets/reconstructions')
+    parser.add_argument('--valid_data', type=str, default='/home/prrgpp000/cpa_enhanced/datasets/reconstructions')
 
     # Train
     parser.add_argument('--batch_size', type=int, default=4)

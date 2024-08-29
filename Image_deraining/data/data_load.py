@@ -6,7 +6,7 @@ from torch.utils.data import Dataset, DataLoader
 
 
 def train_dataloader(path, batch_size=64, num_workers=0, use_transform=True):
-    image_dir = path
+    image_dir = os.path.join(path, 'train_set')
 
     transform = None
     if use_transform:
@@ -28,7 +28,7 @@ def train_dataloader(path, batch_size=64, num_workers=0, use_transform=True):
 
 
 def test_dataloader(path, batch_size=1, num_workers=0):
-    image_dir = os.path.join(path, 'valid')
+    image_dir = path
     dataloader = DataLoader(
         DeblurDataset(image_dir, is_test=True),
         batch_size=batch_size,
@@ -41,6 +41,7 @@ def test_dataloader(path, batch_size=1, num_workers=0):
 
 
 def valid_dataloader(path, batch_size=1, num_workers=0):
+    image_dir = os.path.join(path, 'val_set')
     transform = PairCompose(
         [
             PairCenterCrop(128),
@@ -48,7 +49,7 @@ def valid_dataloader(path, batch_size=1, num_workers=0):
         ]
     )
     dataloader = DataLoader(
-        DeblurDataset(path, transform=transform),
+        DeblurDataset(image_dir, transform=transform),
         batch_size=batch_size,
         shuffle=False,
         num_workers=num_workers
@@ -60,7 +61,8 @@ def valid_dataloader(path, batch_size=1, num_workers=0):
 class DeblurDataset(Dataset):
     def __init__(self, image_dir, transform=None, is_test=False):
         self.image_dir = image_dir
-        self.image_list = os.listdir(os.path.join(image_dir, 'input/'))
+        self.image_list = os.listdir(self.image_dir)
+        self.groundtruth_path = os.path.join(os.path.dirname(self.image_dir), 'y')
         self._check_image(self.image_list)
         self.image_list.sort()
         self.transform = transform
@@ -70,8 +72,10 @@ class DeblurDataset(Dataset):
         return len(self.image_list)
 
     def __getitem__(self, idx):
-        image = Image.open(os.path.join(self.image_dir, 'input', self.image_list[idx]))
-        label = Image.open(os.path.join(self.image_dir, 'target', self.image_list[idx]))
+        image_name = self.image_list[idx]
+        groundtruth_name = image_name.split('_')[-1]
+        image = Image.open(os.path.join(self.image_dir, image_name))
+        label = Image.open(os.path.join(self.groundtruth_path, groundtruth_name))
 
         if self.transform:
             image, label = self.transform(image, label)

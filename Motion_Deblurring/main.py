@@ -50,6 +50,7 @@ if __name__ == '__main__':
     parser.add_argument('--save_freq', type=int, default=100)
     parser.add_argument('--valid_freq', type=int, default=100)
     parser.add_argument('--resume', type=str, default='')
+    parser.add_argument('--result_dir', type=str, default='')
 
     # Test
     parser.add_argument('--test_model', type=str, default='gopro.pkl')
@@ -57,7 +58,8 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     args.model_save_dir = os.path.join('results/', 'ConvIR', 'test')
-    args.result_dir = os.path.join('results/', args.model_name, 'GOPRO')
+    if not os.path.isdir(args.result_dir):
+        args.result_dir = os.path.join('results/', args.model_name, 'GOPRO')
     if not os.path.exists(args.model_save_dir):
         os.makedirs(args.model_save_dir)
     command = 'cp ' + 'models/layers.py ' + args.model_save_dir
