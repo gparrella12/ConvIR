@@ -34,13 +34,13 @@ if __name__ == '__main__':
     # Directories
     parser.add_argument('--model_name', default='ConvIR', type=str)
     parser.add_argument('--data', type=str, default='ITS', choices=['ITS', 'Haze4K', 'NHR', 'GTA5'])
-    parser.add_argument('--version', default='small', choices=['small', 'base', 'large'], type=str)
+    parser.add_argument('--version', default='base', choices=['small', 'base', 'large'], type=str)
 
-    parser.add_argument('--mode', default='test', choices=['train', 'test'], type=str)
-    parser.add_argument('--data_dir', type=str, default='')
+    parser.add_argument('--mode', default='train', choices=['train', 'test'], type=str)
+    parser.add_argument('--data_dir', type=str, default='/home/prrgpp000/cpa_enhanced/datasets/reconstructions')
 
     # Train
-    parser.add_argument('--batch_size', type=int, default=4)
+    parser.add_argument('--batch_size', type=int, default=64)
     parser.add_argument('--learning_rate', type=float, default=1e-4)
     parser.add_argument('--weight_decay', type=float, default=0)
     parser.add_argument('--num_epoch', type=int, default=300)

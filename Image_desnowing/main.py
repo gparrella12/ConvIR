@@ -34,14 +34,13 @@ if __name__ == '__main__':
 
     # Directories
     parser.add_argument('--model_name', default='ConvIR', type=str)
-    parser.add_argument('--data', type=str, default='CSD', choices=['CSD', 'SRRS', 'Snow100K'])
 
-    parser.add_argument('--data_dir', type=str, default='CSD')
+    parser.add_argument('--data_dir', type=str, default='/home/prrgpp000/cpa_enhanced/datasets/reconstructions')
     parser.add_argument('--mode', default='train', choices=['train', 'test'], type=str)
-    parser.add_argument('--version', default='small', choices=['small', 'base', 'large'], type=str)
+    parser.add_argument('--version', default='large', choices=['small', 'base', 'large'], type=str)
 
     # Train
-    parser.add_argument('--batch_size', type=int, default=8)
+    parser.add_argument('--batch_size', type=int, default=16)
     parser.add_argument('--learning_rate', type=float, default=2e-4)
     parser.add_argument('--weight_decay', type=float, default=0)
     parser.add_argument('--num_epoch', type=int, default=2000)
@@ -52,12 +51,12 @@ if __name__ == '__main__':
     parser.add_argument('--resume', type=str, default='')
 
     # Test
-    parser.add_argument('--test_model', type=str, default='CSD.pkl')
+    parser.add_argument('--test_model', type=str, default='desnowing.pkl')
     parser.add_argument('--save_image', type=bool, default=False, choices=[True, False])
 
     args = parser.parse_args()
     args.model_save_dir = os.path.join('results/', args.model_name, 'Training-Results/')
-    args.result_dir = os.path.join('results/', args.model_name, 'images', args.data)
+    args.result_dir = os.path.join('results/', args.model_name, 'images')
     if not os.path.exists(args.model_save_dir):
         os.makedirs(args.model_save_dir)
     command = 'cp ' + 'models/layers.py ' + args.model_save_dir

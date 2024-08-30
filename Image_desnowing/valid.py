@@ -9,7 +9,7 @@ import torch.nn.functional as f
 
 def _valid(model, args, ep):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    snow_data = valid_dataloader(args.data_dir, args.data, batch_size=1, num_workers=0)
+    snow_data = valid_dataloader(args.data_dir, batch_size=1, num_workers=0)
     model.eval()
     psnr_adder = Adder()
 
